@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" data-ng-app="myApp">
+    <head>
+        <meta charset="utf-8">
+        <title>My AngularJS App</title>
+        <link rel="stylesheet" href="css/app.css"/>
+    </head>
+    <body data-ng-controller="LeafNodeController">
+
+        <ul ng-repeat="node in leafNodes">
+            
+        </ul>
+        <select id="worldstateLeafs" multiple="multiple" size="10" data-ng_model="selectedNode" 
+                data-ng-options=" node as getNodeText(node)
+                for node in leafNodes"></select>
+        <script src="http://codeorigin.jquery.com/jquery-2.0.3.js"></script>
+        <script src="../../commons/js/cids.js"></script>
+        <script src="../../commons/js/pure_rest_backend.js"></script>
+        <script src="lib/angular/angular.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+</html>
