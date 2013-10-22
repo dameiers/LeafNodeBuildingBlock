@@ -29,7 +29,7 @@
 
         var augmentRequestOptions = function (optionsAugmenter) {
             var prop;
-            console.log("default options: "+JSON.stringify(that.requestOptionsDefaults));
+            console.log("default options: " + JSON.stringify(that.requestOptionsDefaults));
             var augmentedOptions = Object.create(that.requestOptionsDefaults);
             for (prop in optionsAugmenter) {
                 if (prop === '') {
@@ -44,7 +44,8 @@
 
 
         //public members
-        this.service_base_url = "http://crisma.cismet.de/icmm_api";
+//        this.service_base_url = "http://crisma.cismet.de/icmm_api";
+        this.service_base_url = "http://localhost:8890";
         this.action_base_url = this.service_base_url + "/actions";
         this.users_base_url = this.service_base_url + "/users";
         this.nodes_base_url = this.service_base_url + "/nodes";
@@ -57,9 +58,22 @@
             cache: false,
             dataType: 'json',
             method: 'GET',
-            error: function (jqXHR) {
-                console.log("ajax error " + jqXHR.status);
+//            error: function (jqXHR) {
+//                console.log("ajax error " + jqXHR.status);
+//            }
+        };
+
+        this.setDefaultAuthentication = function (username, password) {
+            if (username && password) {
+                var authString = btoa(username + ':' + password);
+                this.setDefaultAuthenticationString(authString);
             }
+        };
+        this.setDefaultAuthenticationString = function (authString) {
+            var beforeSendFunction = function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Basic ' + authString);
+            };
+            this.requestOptionsDefaults.beforeSend = beforeSendFunction;
         };
 
         this.setDefaultDomain = function (domain) {
@@ -277,7 +291,13 @@
             return $.ajax(requestUrl, requestOptions);
         };
 
-//        this.validateUser
+        this.validateUser = function (options) {
+            var requestUrl;
+            var requestOptions = augmentRequestOptions(options);
+            requestUrl = this.users_base_url;
+            console.log("requestUrl: " + requestUrl);
+            return $.ajax(requestUrl, requestOptions);
+        };
 
         //###########################################################
         //
@@ -291,7 +311,7 @@
             requestUrl += createOptionsString(options);
             console.log("requestUrl: " + requestUrl);
             var promise = $.ajax(requestUrl, requestOptions);
-            
+
             return promise;
         };
 

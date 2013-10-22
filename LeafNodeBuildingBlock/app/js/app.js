@@ -6,7 +6,7 @@ function LeafNodeController ($scope) {
     (function () {
         var options = {
         };
-        ci.getAllObjectsOfClass("worldstates", "crisma", options).done(function (data, state, xhr) {
+        ci.getAllObjectsOfClass("crisma","worldstates", options).done(function (data, state, xhr) {
             var nodes = data.$collection;
             var leafNodes = [];
             var i, currNode;
